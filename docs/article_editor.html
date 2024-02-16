@@ -176,27 +176,24 @@
       </div>
     </header>
 
-    <main class="container-fluid content w-100 position-relative mb-5 content">
-      <div class="container w-100">
-        <!-- VUE APP -->
-        <div id="app">
-          <div
-            class="position-fixed w-100 vh-100 d-flex align-items-center justify-content-center z-3 popup d-none"
-            id="popup"
-          >
-            <div class="bg-white p-5 user-div">
-              <h2>Do you want to delete the article?</h2>
-              <div class="d-flex justify-content-center">
-                <button class="btn m-2" v-on:click="removePost(true)">
-                  Delete
-                </button>
-                <button class="btn m-2" v-on:click="removePost(false)">
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
+    <!-- VUE APP -->
 
+    <div id="app">
+      <div class="popupcontainer d-none" id="popup" ref="pop">
+        <div class="bg-white p-5">
+          <h2>Do you want to delete the article?</h2>
+          <div class="d-flex justify-content-center">
+            <button class="btn m-2" v-on:click="removePost(true)">
+              Delete
+            </button>
+            <button class="btn m-2" v-on:click="removePost(false)">No</button>
+          </div>
+        </div>
+      </div>
+      <main
+        class="container-fluid content w-100 position-relative mb-5 content"
+      >
+        <div class="container w-100">
           <h1>Article Editor</h1>
           <label for="Title" class="form-label">Title</label>
           <div id="editor">
@@ -241,6 +238,7 @@
             <input
               type="file"
               id="img"
+              ref="img"
               name="img"
               accept="image/*"
               class="form-control"
@@ -286,10 +284,10 @@
               No articles yet...
             </ul>
           </div>
+          <!-- VUE APP -->
         </div>
-        <!-- VUE APP -->
-      </div>
-    </main>
+      </main>
+    </div>
 
     <div
       class="container-fluid bg-primary fixed-bottom d-block d-sm-block d-md-none mt-5"
@@ -369,6 +367,7 @@
             publishing_date: "",
             id: 0,
           };
+          this.$refs.img.value = null;
         },
         createPost: function (e) {
           if (
@@ -376,13 +375,12 @@
             !(this.post.article === null || this.post.article === "") &&
             !(this.post.description === null || this.post.description === "") &&
             !(this.post.tags === null || this.post.tags === "") &&
-            !(this.post.author === null || this.post.author === "")
+            !(this.post.author === null || this.post.author === "") &&
+            !(this.$refs.img.value === null)
           ) {
             this.post.creation_date = new Date().toLocaleDateString("en-GB");
             this.post.id = this.posts;
             this.posts++;
-            // let img = document.getElementById("img");
-            // this.post.img = URL.createObjectURL(img.files[0]);
 
             const post = { ...this.post };
             this.array.push(post);
@@ -393,12 +391,11 @@
           if (remove) {
             this.array.splice(this.delete, 1);
           }
-          popup.classList.toggle("d-none");
+          this.$refs.pop.classList.toggle("d-none");
         },
         deletePopUp: function (index) {
           this.delete = index;
-          let popup = document.getElementById("popup");
-          popup.classList.toggle("d-none");
+          this.$refs.pop.classList.toggle("d-none");
         },
         editPost: function (index) {
           this.position = index;
