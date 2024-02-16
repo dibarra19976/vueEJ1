@@ -1,0 +1,23 @@
+#editor {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#editor #title{
+    font-size: 20pt;
+}
+
+#editor textarea{
+    resize:none ;
+    height: 800px;
+}
+
+.posts ul{
+    display: flex;
+    flex-direction: column;
+}
+
+.posts ul li{
+    width: 100%;
+}
